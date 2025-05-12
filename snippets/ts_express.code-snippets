@@ -1,0 +1,344 @@
+{
+  "scope": "typescript, typescriptreact",
+  "Express basic index.ts setup (ESM) with try/catch in listen": {
+    "prefix": "exindex",
+    "body": [
+      "import express, { Request, Response } from 'express';",
+      "",
+      "const app = express();",
+      "",
+      "app.use(express.json());",
+      "",
+      "app.get('/', (req: Request, res: Response) => {",
+      "  res.status(200).json({ message: 'Server is running' });",
+      "});",
+      "",
+      "const PORT: number | string = process.env.PORT || ${1:3000};",
+      "app.listen(PORT, () => {",
+      "  try {",
+      "    console.log(`Server started on port ${PORT}`);",
+      "  } catch (error) {",
+      "    console.error('Error starting server:', error);",
+      "  }",
+      "});"
+    ],
+    "description": "Basic Express server setup with json middleware and listen (ES modules) with try/catch in listen callback (TypeScript)"
+  },
+
+  "Express basic index.ts setup full (ESM) with morgan, helmet and router": {
+    "prefix": "exindexfull",
+    "body": [
+      "import express, { Request, Response } from 'express';",
+      "import morgan from 'morgan';",
+      "import helmet from 'helmet';",
+      "import ${1:routerName} from './routes/${1}';",
+      "",
+      "const app = express();",
+      "",
+      "app.use(helmet());",
+      "app.use(morgan('combined'));",
+      "app.use(express.json());",
+      "",
+      "app.use('${2:/api}', ${1:routerName});",
+      "",
+      "app.get('/', (req: Request, res: Response) => {",
+      "  res.status(200).json({ message: 'Server is running' });",
+      "});",
+      "",
+      "const PORT: number | string = process.env.PORT || ${3:3000};",
+      "app.listen(PORT, () => {",
+      "  try {",
+      "    console.log(`Server started on port ${PORT}`);",
+      "  } catch (error) {",
+      "    console.error('Error starting server:', error);",
+      "  }",
+      "});"
+    ],
+    "description": "Full Express server setup with helmet, morgan, json middleware and router mount (ES modules) (TypeScript)"
+  },
+
+  "Express middleware error handler": {
+    "prefix": "exerror",
+    "body": [
+      "app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {",
+      "  console.error(err);",
+      "  res.status((err as any).status || 500).json({",
+      "    success: false,",
+      "    message: err.message || 'Internal Server Error'",
+      "  });",
+      "});"
+    ],
+    "description": "Express centralized error handling middleware (TypeScript)"
+  },
+
+  "Mongoose basic user schema (ESM) with types": {
+    "prefix": "muser",
+    "body": [
+      "import mongoose, { Schema, Document, Model } from 'mongoose';",
+      "",
+      "interface IUser extends Document {",
+      "  username: string;",
+      "  email: string;",
+      "  password: string;",
+      "  createdAt?: Date;",
+      "}",
+      "",
+      "const UserSchema: Schema<IUser> = new Schema({",
+      "  username: { type: String, required: true, unique: true },",
+      "  email: { type: String, required: true, unique: true },",
+      "  password: { type: String, required: true },",
+      "  createdAt: { type: Date, default: Date.now }",
+      "});",
+      "",
+      "const User: Model<IUser> = mongoose.model<IUser>('User', UserSchema);",
+      "export default User;"
+    ],
+    "description": "Basic Mongoose User schema with types (TypeScript)"
+  },
+
+  "Express route with method, path and handler function call": {
+    "prefix": "exroute",
+    "body": [
+      "app.${1|post,get,put,delete|}('${2:/path}', ${3:handlerFunction});"
+    ],
+    "description": "Express route with HTTP method, path and handler function call (TypeScript)"
+  },
+
+  "Export named async function handler": {
+    "prefix": "exfunc",
+    "body": [
+      "import { Request, Response } from 'express';",
+      "",
+      "export const ${1:handlerName} = async (req: Request, res: Response): Promise<Response> => {",
+      "  try {",
+      "    ${2:// your code here}",
+      "    return res.status(${3:200}).json({ success: true, data: ${4:data} });",
+      "  } catch (error) {",
+      "    console.error(error);",
+      "    return res.status(${5:500}).json({ success: false, message: (error as Error).message || 'Internal Server Error' });",
+      "  }",
+      "};"
+    ],
+    "description": "Export named async function handler with try/catch and JSON response (TypeScript)"
+  },
+
+  "Express use router in app": {
+    "prefix": "exuse",
+    "body": [
+      "app.use('${1:/api/path}', ${2:routerVariable});"
+    ],
+    "description": "Attach router to app with app.use('/path', router) (TypeScript)"
+  },
+
+  "Express router route declaration": {
+    "prefix": "rroute",
+    "body": [
+      "router.${1|get,post,put,delete|}('${2:/path}', ${3:handlerFunction});"
+    ],
+    "description": "Declare route on express router with method, path and handler (TypeScript)"
+  },
+
+  "Express router file template (ESM) with types": {
+    "prefix": "exrouter",
+    "body": [
+      "import express, { Router, Request, Response } from 'express';",
+      "",
+      "const router: Router = express.Router();",
+      "",
+      "${1:// Define your routes here}",
+      "",
+      "export default router;"
+    ],
+    "description": "Basic Express router file template with import, router and export (ES modules) (TypeScript)"
+  },
+
+  "Mongoose connect to MongoDB": {
+    "prefix": "connectdb",
+    "body": [
+      "import mongoose from 'mongoose';",
+      "",
+      "const connectDB = async (): Promise<void> => {",
+      "  try {",
+      "    await mongoose.connect(process.env.MONGO_URI!, {",
+      "      useNewUrlParser: true,",
+      "      useUnifiedTopology: true,",
+      "    });",
+      "    console.log('MongoDB Connected...');",
+      "  } catch (err) {",
+      "    console.error('Database connection error:', (err as Error).message);",
+      "    process.exit(1);",
+      "  }",
+      "};",
+      "",
+      "export { connectDB };"
+    ],
+    "description": "Async function to connect to MongoDB using Mongoose with error handling (TypeScript)"
+  },
+
+  "Express dynamic route with params and try/catch": {
+    "prefix": "exrouteparam",
+    "body": [
+      "app.${1|get,post,put,delete|}('${2:/path/:param}', async (req: Request, res: Response) => {",
+      "  try {",
+      "    const ${3:param} = req.params.${3:param};",
+      "    ${4:// your code here}",
+      "    return res.status(${5:200}).json({ success: true, data: ${6:data} });",
+      "  } catch (error) {",
+      "    console.error(error);",
+      "    return res.status(${7:500}).json({ success: false, message: (error as Error).message || 'Internal Server Error' });",
+      "  }",
+      "});"
+    ],
+    "description": "Express route with URL params, async handler, try/catch and JSON response (TypeScript)"
+  },
+
+  "Express access query and body with validation": {
+    "prefix": "exreq",
+    "body": [
+      "app.${1|get,post|}('${2:/path}', async (req: Request, res: Response) => {",
+      "  try {",
+      "    const query = req.query;",
+      "    const body = req.body;",
+      "    // Example validation",
+      "    if (!body.${3:requiredField}) {",
+      "      return res.status(400).json({ success: false, message: '${3:requiredField} is required' });",
+      "    }",
+      "    ${4:// your code here}",
+      "    return res.status(200).json({ success: true, data: ${5:data} });",
+      "  } catch (error) {",
+      "    console.error(error);",
+      "    return res.status(500).json({ success: false, message: (error as Error).message || 'Internal Server Error' });",
+      "  }",
+      "});"
+    ],
+    "description": "Express route accessing req.query and req.body with simple validation and try/catch (TypeScript)"
+  },
+
+  "Express json response 200": {
+    "prefix": "json200",
+    "body": [
+      "res.status(200).json({ success: true, data: ${1:null} });"
+    ],
+    "description": "Send JSON response with status 200 OK (TypeScript)"
+  },
+
+  "Express json response 201": {
+    "prefix": "json201",
+    "body": [
+      "res.status(201).json({ success: true, data: ${1:null} });"
+    ],
+    "description": "Send JSON response with status 201 Created (TypeScript)"
+  },
+
+  "Express json response 400": {
+    "prefix": "json400",
+    "body": [
+      "res.status(400).json({ success: false, message: ${1:'Bad Request'} });"
+    ],
+    "description": "Send JSON response with status 400 Bad Request (TypeScript)"
+  },
+
+  "Express json response 401": {
+    "prefix": "json401",
+    "body": [
+      "res.status(401).json({ success: false, message: ${1:'Unauthorized'} });"
+    ],
+    "description": "Send JSON response with status 401 Unauthorized (TypeScript)"
+  },
+
+  "Express json response 403": {
+    "prefix": "json403",
+    "body": [
+      "res.status(403).json({ success: false, message: ${1:'Forbidden'} });"
+    ],
+    "description": "Send JSON response with status 403 Forbidden (TypeScript)"
+  },
+
+  "Express json response 404": {
+    "prefix": "json404",
+    "body": [
+      "res.status(404).json({ success: false, message: ${1:'Not Found'} });"
+    ],
+    "description": "Send JSON response with status 404 Not Found (TypeScript)"
+  },
+
+  "Express json response 500": {
+    "prefix": "json500",
+    "body": [
+      "res.status(500).json({ success: false, message: ${1:'Internal Server Error'} });"
+    ],
+    "description": "Send JSON response with status 500 Internal Server Error (TypeScript)"
+  },
+
+  "Express send plain text response": {
+    "prefix": "sendtxt",
+    "body": [
+      "res.status(${1:200}).send('${2:Text response}');"
+    ],
+    "description": "Send plain text response with status (TypeScript)"
+  },
+
+  "Express redirect response": {
+    "prefix": "redirect",
+    "body": [
+      "res.redirect(${1:301}, '${2:/new-url}');"
+    ],
+    "description": "Redirect response with status and URL (TypeScript)"
+  },
+
+  "Express file download response": {
+    "prefix": "download",
+    "body": [
+      "res.download('${1:/path/to/file}', '${2:filename}', (err) => {",
+      "  if (err) {",
+      "    console.error(err);",
+      "    res.status(500).send('Error downloading file');",
+      "  }",
+      "});"
+    ],
+    "description": "Send file download response with error handling (TypeScript)"
+  },
+
+  "Mongoose schema method template": {
+    "prefix": "mschemaMethod",
+    "body": [
+      "${1:SchemaName}.methods.${2:methodName} = function(${3:args}): ${4:void | any} {",
+      "  ${5:// method logic here}",
+      "};"
+    ],
+    "description": "Add method to Mongoose schema (specify schema variable name) (TypeScript)"
+  },
+
+  "Mongoose schema virtual property": {
+    "prefix": "mschemaVirtual",
+    "body": [
+      "${1:SchemaName}.virtual('${2:virtualName}').get(function(): ${3:any} {",
+      "  return ${4:// computed value};",
+      "});"
+    ],
+    "description": "Add virtual property to Mongoose schema (specify schema variable name) (TypeScript)"
+  },
+
+  "Mongoose schema pre hook": {
+    "prefix": "mschemaPre",
+    "body": [
+      "${1:SchemaName}.pre('${2:save}', async function(next: Function) {",
+      "  try {",
+      "    ${3:// pre-hook logic}",
+      "    next();",
+      "  } catch (error) {",
+      "    next(error);",
+      "  }",
+      "});"
+    ],
+    "description": "Add pre hook to Mongoose schema with async error handling (specify schema variable name) (TypeScript)"
+  },
+
+  "Mongoose schema index": {
+    "prefix": "mschemaIndex",
+    "body": [
+      "${1:SchemaName}.index({ ${2:field}: 1 });"
+    ],
+    "description": "Add index to Mongoose schema (specify schema variable name) (TypeScript)"
+  }
+}
